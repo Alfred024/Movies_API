@@ -1,0 +1,9 @@
+body{
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 2fr 8fr 1fr;
+}
+i{
+    color: white;
+    padding: 50px 10px 25px 10px;
+}
