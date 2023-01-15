@@ -3,7 +3,13 @@ body{
     display: grid;
     grid-template-rows: 2fr 8fr 1fr;
 }
-i{
+h1{
+    left: 0;
+    right: 0;
+    margin-right: auto;
+    margin-left: auto;   
+}
+footer i{
     color: white;
     padding: 50px 10px 25px 10px;
 }
