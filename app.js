@@ -36,6 +36,7 @@ app.post("/", function(req, res){
     const path = "/?s="+movie+"&r=json&page=1"
     options.path = path;
     
+    //movies = [];
     const request = http.request(options, function (respond) {
         const chunks = [];
         respond.on("data", function (chunk) {
@@ -59,7 +60,7 @@ app.post("/", function(req, res){
 app.get("/searchs", function(req, res){
     res.render("searchs", {
         moviesFounded: movies
-    });
+    });movies = [];
 });
 
 // app.get("/searchs/:movieSearch", function(req, res){

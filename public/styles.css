@@ -1,7 +1,7 @@
 body{
     height: 100vh;
     display: grid;
-    grid-template-rows: 10vh fit-content minmax(10vh, 100px);
+    grid-template-rows: 10vh fit-content minmax(100px, 10vh);
 }
 h1{
     left: 0;
@@ -14,17 +14,45 @@ footer i{
     padding: 50px 10px 25px 10px;
 }
 
-/* Cards for the movies search */
 
+/*Main part of the Home EJS part*/
+main{
+    /* background-image: url(https://images.pexels.com/photos/7234214/pexels-photo-7234214.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat; */
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    max-height: fit-content;
+    min-height: 80vh;
+    padding-top: 80px;
+}
+main a{
+    text-decoration: none;
+    color: white;
+}
+Estilo de botón como cinta de cine
+/* main button{
+    background-color: black;
+    border-radius: ;
+} */
+
+/* Cards for the movies search */
+.cardsContainers{
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: center;
+}
 .shopCard{
     font-family: 'Mukta', sans-serif;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    width: 500px;
+    width: 450px;
     height: fit-content;
     background-color: rgba(58, 58, 58, 0.897);
     border-radius: 15px;
-    margin: 15px 0px;
+    margin: 15px 10px;
     overflow: hidden;
 }
 .shopCard img{
