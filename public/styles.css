@@ -1,7 +1,7 @@
 body{
     height: 100vh;
     display: grid;
-    grid-template-rows: 10vh auto 15vh;
+    grid-template-rows: 10vh fit-content minmax(10vh, 100px);
 }
 h1{
     left: 0;
@@ -46,4 +46,8 @@ footer i{
     border: none;
     padding: 10px 0px;
     border-radius: 10px;
+}
+.shopCard button:hover{
+    transition: 0.6s;
+    background-color: rgb(187, 46, 46);
 }
