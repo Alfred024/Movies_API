@@ -1,7 +1,7 @@
 body{
     height: 100vh;
     display: grid;
-    grid-template-rows: 2fr 8fr 1fr;
+    grid-template-rows: 10vh auto 15vh;
 }
 h1{
     left: 0;
@@ -15,3 +15,35 @@ footer i{
 }
 
 /* Cards for the movies search */
+
+.shopCard{
+    font-family: 'Mukta', sans-serif;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 500px;
+    height: fit-content;
+    background-color: rgba(58, 58, 58, 0.897);
+    border-radius: 15px;
+    margin: 15px 0px;
+    overflow: hidden;
+}
+.shopCard img{
+    width: 100%;
+    height: 100%;
+}
+.shopCard .infoContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0px 20px;
+}
+.shopCard p{
+    font-size: 12px;
+}
+.shopCard button{
+    color: white;
+    background-color: rgb(151, 10, 10);
+    border: none;
+    padding: 10px 0px;
+    border-radius: 10px;
+}
