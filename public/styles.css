@@ -9,15 +9,17 @@ h1{
     margin-right: auto;
     margin-left: auto;   
 }
+i{
+    color: white;
+}
 footer i{
     color: white;
     padding: 50px 10px 25px 10px;
 }
 
-
 /*Main part of the Home EJS part*/
 main{
-    /* background-image: url(https://images.pexels.com/photos/7234214/pexels-photo-7234214.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2);
+    /* background-image: url(https://images.pexels.com/photos/13400083/pexels-photo-13400083.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat; */
@@ -27,16 +29,29 @@ main{
     max-height: fit-content;
     min-height: 80vh;
     padding-top: 80px;
+    color: white;
+    background-color: whitesmoke;
 }
 main a{
     text-decoration: none;
     color: white;
 }
-Estilo de botón como cinta de cine
-/* main button{
+/*Estilo de botón como cinta de cine*/
+main button{
     background-color: black;
-    border-radius: ;
-} */
+    margin: 30px;
+    padding: 5px 8px;
+}
+main .titleContent{
+    color: black;
+}
+main .titleContent button{
+    margin: 0px;
+    width: 30px;
+    padding: 0px;
+    height: 30px;
+    border-radius: 50%;
+}
 
 /* Cards for the movies search */
 .cardsContainers{
