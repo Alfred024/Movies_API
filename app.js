@@ -34,27 +34,21 @@ const moviesSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    posterURL:{
-        type: String,
-        require: true
-    },
-    year:{
-        type: String,
-        require: true
-    }
+    post: String,
+    year: String
 });
 const Movie = new mongoose.model("Movie", moviesSchema);
 
-const dataBaseOfMovies = {
-    movieList:{
-        type: String,
-        require: true
-    },
-    movies:[moviesSchema]
-};
+const favourites = new Movie({
+    name: "favourites",
+    posterURL: ""
+});
+// const no_favourites = new Movie({
 
-const Data_Base = mongoose.model("Data_Base", dataBaseOfMovies);
+// });
+// const want_to_see = new Movie({
 
+// });
 
 app.get("/", function(req, res){
     res.render("home",{});
@@ -87,14 +81,35 @@ app.post("/", function(req, res){
 app.get("/searchs", function(req, res){
     res.render("searchs", {
         moviesFounded: movies
-    });movies = [];
+    });
+    movies = [];
 });
+
+app.post("/demo", function(req, res){
+    const listSelected = req.body.favouritesBtn;
+    res.redirect("/"+listSelected);
+});
+
+app.get("/favourites", function(req, res){
+    //Que muestre todas las películas favs
+});
+// app.get("/no-favourites", function(req, res){
+
+// });
+// app.get("/want-to-see", function(req, res){
+
+// });
 
 const port = 800;
 app.listen(port, function(){
     console.log("Server 800 working");
 });
 
+
+//Crear tres colecciones 
+//Usaremos una sola base de datos la cual contendrá 3 collections
+//También pudimos hacer una sola colección que guardara 
+//3 objetos por cada categoría de películas
 
 //Api key: f6137e5195mshdf86938941b3431p1ddc6djsnac1167679c6f
 
