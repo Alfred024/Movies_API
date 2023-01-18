@@ -28,6 +28,34 @@ app.use(express.static("public"));
 mongoose.set("strictQuery", false);
 mongoose.connect("mongodb://localhost:27017/moviesDB");
 
+    //Esquema para cada película individualmente
+const moviesSchema = new mongoose.Schema({
+    name:{
+        type: String,
+        require: true
+    },
+    posterURL:{
+        type: String,
+        require: true
+    },
+    year:{
+        type: String,
+        require: true
+    }
+});
+const Movie = new mongoose.model("Movie", moviesSchema);
+
+const dataBaseOfMovies = {
+    movieList:{
+        type: String,
+        require: true
+    },
+    movies:[moviesSchema]
+};
+
+const Data_Base = mongoose.model("Data_Base", dataBaseOfMovies);
+
+
 app.get("/", function(req, res){
     res.render("home",{});
 });
@@ -36,7 +64,6 @@ app.post("/", function(req, res){
     const path = "/?s="+movie+"&r=json&page=1"
     options.path = path;
     
-    //movies = [];
     const request = http.request(options, function (respond) {
         const chunks = [];
         respond.on("data", function (chunk) {
@@ -45,7 +72,7 @@ app.post("/", function(req, res){
     
         respond.on("end", function () {
             const body = Buffer.concat(chunks);
-            let json = JSON.parse(body.toString());
+            const json = JSON.parse(body.toString());
 
             for (let i = 0; i < 10; i++) {
                 movies.push(json.Search[i]);
@@ -62,25 +89,6 @@ app.get("/searchs", function(req, res){
         moviesFounded: movies
     });movies = [];
 });
-
-// app.get("/searchs/:movieSearch", function(req, res){
-//     const request = http.request(options, function (respond) {
-//         const chunks = [];
-//         respond.on("data", function (chunk) {
-//             chunks.push(chunk);
-//         });
-    
-//         respond.on("end", function () {
-//             const body = Buffer.concat(chunks);
-//             let json = JSON.parse(body.toString());
-//             const moviesNum = json.Search.length;
-
-            
-//         });
-//     });
-
-//     request.end();
-// });
 
 const port = 800;
 app.listen(port, function(){
