@@ -3,17 +3,23 @@
     <section class="cardsContainers">
         <% for(var i=0; i < 10; i++){ %>
             <article  class="shopCard">
-                <div class="imgContainer">
-                    <img src="<%= moviesFounded[i].Poster %>" alt="moviePhoto">
-                </div>
+                
                 <div class="infoContainer">
                     <h2><%= moviesFounded[i].Title %></h2>
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam earum tempore eum facere dolor rerum suscipit corrupti consequuntur asperiores molestias nobis omnis.
                     </p>
-                    <button >
-                        <i class="fa-regular fa-heart"></i>
-                        <label for="">Add to favourites</label>
-                    </button>
+
+                    <form action="/searchs" method="post">
+                        <button type="submit" name="favBtn" value="<%= moviesFounded[i].Title %>">
+                            <i class="fa-regular fa-heart"></i>
+                            <label for="">Add to favourites</label>
+                        </button>
+                    </form>
+                    
+                </div>
+
+                <div class="imgContainer">
+                    <img src="<%= moviesFounded[i].Poster %>" alt="moviePhoto">
                 </div>
             </article>
         <% } %>

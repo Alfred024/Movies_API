@@ -28,22 +28,31 @@ app.use(express.static("public"));
 mongoose.set("strictQuery", false);
 mongoose.connect("mongodb://localhost:27017/moviesDB");
 
-    //Esquema para cada película individualmente
-const moviesSchema = new mongoose.Schema({
-    name:{
-        type: String,
-        require: true
-    },
-    post: String,
-    year: String
-});
-const Movie = new mongoose.model("Movie", moviesSchema);
 
-const favourites = new Movie({
-    name: "favourites",
-    posterURL: ""
+//Esquema para que la DB moviesDB almacene collections 
+const itemMovieSchema = new mongoose.Schema({
+    name:{
+      type: String,
+      required: true
+    },
+    year: Number,
+    poster: String
+  });
+const MovieItem = mongoose.model("MovieItem", itemMovieSchema);
+
+const moviesListSchema = {
+    movieSection: String,
+    movieAdded: [itemMovieSchema]
+};
+const ListMovie = mongoose.model("ListMovie", moviesListSchema);
+  
+app.get("/", function(req, res) {
+  
+  Item.find({}, function(e, items){
+    res.render("list", {listTitle: "Actual day", newListItems: items});
+  });
+   
 });
-// const no_favourites = new Movie({
 
 // });
 // const want_to_see = new Movie({
@@ -57,7 +66,6 @@ app.post("/", function(req, res){
     const movie = _.kebabCase(req.body.movieSeacrhed);
     const path = "/?s="+movie+"&r=json&page=1"
     options.path = path;
-    
     const request = http.request(options, function (respond) {
         const chunks = [];
         respond.on("data", function (chunk) {
@@ -83,6 +91,14 @@ app.get("/searchs", function(req, res){
         moviesFounded: movies
     });
     movies = [];
+});
+app.post("/searchs", function(req, res){
+    const movieFav = req.body.favBtn;
+
+    const movieSection = new MoviesSection({
+        name: movieFav
+    });
+
 });
 
 app.post("/demo", function(req, res){
