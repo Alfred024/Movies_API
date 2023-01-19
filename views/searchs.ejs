@@ -10,7 +10,7 @@
                     </p>
 
                     <form action="/searchs" method="post">
-                        <button type="submit" name="favBtn" value="<%= moviesFounded[i].Title %>">
+                        <button type="submit" name="favBtn" value="<%= JSON.stringify(moviesFounded[i]) %>">
                             <i class="fa-regular fa-heart"></i>
                             <label for="">Add to favourites</label>
                         </button>

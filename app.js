@@ -31,10 +31,7 @@ mongoose.connect("mongodb://localhost:27017/moviesDB");
 
 //Esquema para que la DB moviesDB almacene collections 
 const itemMovieSchema = new mongoose.Schema({
-    name:{
-      type: String,
-      required: true
-    },
+    name: String,
     year: Number,
     poster: String
   });
@@ -46,14 +43,6 @@ const moviesListSchema = {
 };
 const ListMovie = mongoose.model("ListMovie", moviesListSchema);
   
-app.get("/", function(req, res) {
-  
-  Item.find({}, function(e, items){
-    res.render("list", {listTitle: "Actual day", newListItems: items});
-  });
-   
-});
-
 // });
 // const want_to_see = new Movie({
 
@@ -90,24 +79,42 @@ app.get("/searchs", function(req, res){
     res.render("searchs", {
         moviesFounded: movies
     });
-    movies = [];
+    //movies = [];
 });
 app.post("/searchs", function(req, res){
-    const movieFav = req.body.favBtn;
+    //Return the object converted to JSON
+    const movieObject = req.body.favBtn;
 
-    const movieSection = new MoviesSection({
-        name: movieFav
+    const newMovie = new MovieItem({
+        name: movieObject.Title,
+        year: Number(movieObject.Year),
+        poster: movieObject.Poster
     });
 
+    ListMovie.findOne({movieSection: movieObject.Title}, function(e, list){
+      if(e){
+        console.log(e);
+      }else{
+        if(list){
+            console.log("Movie succesfully added to favourites");
+        }else{
+            newMovie.save();
+            //res.redirect("/favourites");
+        }
+      }
+    });
+
+    res.redirect("/favourites");
 });
 
-app.post("/demo", function(req, res){
+app.post("/btnFavs", function(req, res){
     const listSelected = req.body.favouritesBtn;
     res.redirect("/"+listSelected);
 });
 
 app.get("/favourites", function(req, res){
     //Que muestre todas las películas favs
+    res.send("FAVOURITES PAGE");
 });
 // app.get("/no-favourites", function(req, res){
 
