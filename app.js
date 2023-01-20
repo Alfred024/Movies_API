@@ -4,6 +4,7 @@ const app = express();
 const http = require("https");
 const _ = require("lodash");
 const mongoose = require("mongoose");
+let contador = 1;
 
 let movies = [];
 
@@ -33,7 +34,8 @@ mongoose.connect("mongodb://localhost:27017/moviesDB");
 const itemMovieSchema = new mongoose.Schema({
     name: String,
     year: Number,
-    poster: String
+    poster: String,
+    section: String
   });
 const MovieItem = mongoose.model("MovieItem", itemMovieSchema);
 
@@ -81,35 +83,38 @@ app.get("/searchs", function(req, res){
     });
     //movies = [];
 });
-app.post("/searchs", function(req, res){
+app.post("/btnFavs", function(req, res){
     //Return the object converted to JSON
-    const movieObject = req.body.favBtn;
+    const movieObject = JSON.parse(req.body.favBtn);
 
     const newMovie = new MovieItem({
         name: movieObject.Title,
         year: Number(movieObject.Year),
-        poster: movieObject.Poster
+        poster: movieObject.Poster,
+        section: "Favourites"
     });
 
-    ListMovie.findOne({movieSection: movieObject.Title}, function(e, list){
-      if(e){
-        console.log(e);
-      }else{
-        if(list){
-            console.log("Movie succesfully added to favourites");
+    const newList = new ListMovie({
+        movieSection: newMovie.section,
+        //movieAdded: newMovie.push()
+    })
+
+    ListMovie.findOne({movieSection: newMovie.section}, function (e, list) {
+        if(e){
+            console.log(e);
         }else{
-            newMovie.save();
-            //res.redirect("/favourites");
+            if(list){
+                console.log("Película "+newMovie.name);
+                list.movieAdded.push(newMovie);
+                list.save();
+            }else{
+                console.log("Lista creada");
+                newList.save();
+                newList.movieAdded.push(newMovie);
+            }
         }
-      }
     });
 
-    res.redirect("/favourites");
-});
-
-app.post("/btnFavs", function(req, res){
-    const listSelected = req.body.favouritesBtn;
-    res.redirect("/"+listSelected);
 });
 
 app.get("/favourites", function(req, res){

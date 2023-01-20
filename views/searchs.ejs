@@ -9,11 +9,12 @@
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam earum tempore eum facere dolor rerum suscipit corrupti consequuntur asperiores molestias nobis omnis.
                     </p>
 
-                    <form action="/searchs" method="post">
-                        <button type="submit" name="favBtn" value="<%= JSON.stringify(moviesFounded[i]) %>">
+                    <form action="/btnFavs" method="post">
+                        <button id="favs" type="submit" name="favBtn" value="<%= JSON.stringify(moviesFounded[i]) %>">
                             <i class="fa-regular fa-heart"></i>
                             <label for="">Add to favourites</label>
                         </button>
+                        
                     </form>
                     
                 </div>
