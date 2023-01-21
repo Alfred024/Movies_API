@@ -5,9 +5,8 @@ const http = require("https");
 const _ = require("lodash");
 const mongoose = require("mongoose");
 const { read } = require("fs");
-let contador = 1;
 
-let movies = [];
+const movies = [];
 
 let options = {
 	"method": "GET",
@@ -46,13 +45,16 @@ const moviesListSchema = {
 };
 const ListMovie = mongoose.model("ListMovie", moviesListSchema);
 
+//MÉTODOS DE LA PÁGINA PRINCIPAL (home)
 app.get("/", function(req, res){
     res.render("home",{});
 });
 app.post("/", function(req, res){
     const movie = _.kebabCase(req.body.movieSeacrhed);
+    console.log(movie);
     const path = "/?s="+movie+"&r=json&page=1"
     options.path = path;
+    console.log(options.path);
     const request = http.request(options, function (respond) {
         const chunks = [];
         respond.on("data", function (chunk) {
@@ -69,9 +71,12 @@ app.post("/", function(req, res){
         });
     });
 
-    request.end();
+    
     res.redirect("/searchs");
+    request.end();
 });
+
+//MÉTODOS PARA RENDERIZAR LOS TEMPLATES DE FAVOURTIES Y WANT-TO-SEE 
 app.get("/favourites", function(req, res){
     ListMovie.findOne({movieSection: "Favourites"}, function (e, section){
         if(e){
@@ -85,7 +90,6 @@ app.get("/favourites", function(req, res){
 app.post("/favourites", function(req, res){
     res.redirect("/favourites");
 });
-
 app.get("/want-to-see", function(req, res){
     ListMovie.findOne({movieSection: "Want-to-see"}, function (e, section){
      if(e){
@@ -94,17 +98,20 @@ app.get("/want-to-see", function(req, res){
          res.render("want-to-see", {moviesArray: section.movieAdded});
      }
     });
- });
- app.post("/want-to-see", function(req, res){
+});
+app.post("/want-to-see", function(req, res){
      res.redirect("/want-to-see");
- });
+});
 
+//RENDERIZA LAS PELÍCULAS QUE BUSCAMOS
 app.get("/searchs", function(req, res){
     res.render("searchs", {
         moviesFounded: movies
     });
     //movies = [];
 });
+
+//BOTONES PARA GUARDAR EN LA LISTA DE PELÍCULAS
 app.post("/btnFavs", function(req, res){
     //Return the object converted to JSON
     const movieObject = JSON.parse(req.body.favBtn);
@@ -132,6 +139,20 @@ app.post("/btnWTS", function(req, res){
     saveMovie(newMovie)
 });
 
+//PARA BORRAR ELEMENTOS AGREGADOS
+app.post("/delete", function(req, res){
+    const movie = (req.body.deleteBtn);
+    const movie2 = JSON.parse(movie);
+
+    console.log(movie+"\n"); 
+    console.log(movie2);
+
+    // const movieId = movie._id;
+    // const movieSection = movie.section;
+    // console.log("Section: "+movieSection);
+    // console.log("ID: "+movieId);
+});
+
 async function saveMovie(newMovie){
     const newList = new ListMovie({
         movieSection: newMovie.section
@@ -152,6 +173,10 @@ async function saveMovie(newMovie){
             }
         }
     });
+}
+//Verificar que no se repita la película que queremos guardar
+async function isRepeated(){
+    return false;
 }
 
 const port = 800;

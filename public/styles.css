@@ -33,6 +33,9 @@ main{
     color: white;
     background-color: whitesmoke;
 }
+main .otherButtos{
+    display: flex;
+}
 main a{
     text-decoration: none;
     color: white;
@@ -105,6 +108,14 @@ main a{
     grid-template-columns: repeat(3, auto);
 }
 
+/* Movie list render section: /favourites, /want-to-see */
+.deleteBtnContainer{
+    display: flex;
+    justify-content: end;
+}
+.deleteBtnContainer button{
+    padding: 10px 15px;
+}
 @media (max-width: 940px) {
     .cardsContainers {
         grid-template-columns: auto;
