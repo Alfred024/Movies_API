@@ -94,9 +94,25 @@ app.post("/btnFavs", function(req, res){
         section: "Favourites"
     });
 
+    saveMovie(newMovie)
+});
+app.post("/btnWTS", function(req, res){
+    //Return the object converted to JSON
+    const movieObject = JSON.parse(req.body.favBtn);
+
+    const newMovie = new MovieItem({
+        name: movieObject.Title,
+        year: Number(movieObject.Year),
+        poster: movieObject.Poster,
+        section: "Want-to-see"
+    });
+
+    saveMovie(newMovie)
+});
+
+async function saveMovie(newMovie){
     const newList = new ListMovie({
-        movieSection: newMovie.section,
-        //movieAdded: newMovie.push()
+        movieSection: newMovie.section
     })
 
     ListMovie.findOne({movieSection: newMovie.section}, function (e, list) {
@@ -104,40 +120,22 @@ app.post("/btnFavs", function(req, res){
             console.log(e);
         }else{
             if(list){
-                console.log("Película "+newMovie.name);
+                console.log("Película "+newMovie.name+" guardada en favoritas :)");
                 list.movieAdded.push(newMovie);
                 list.save();
             }else{
-                console.log("Lista creada");
+                console.log("Lista "+ newMovie.section +" creada");
                 newList.save();
                 newList.movieAdded.push(newMovie);
             }
         }
     });
-
-});
-
-app.get("/favourites", function(req, res){
-    //Que muestre todas las películas favs
-    res.send("FAVOURITES PAGE");
-});
-// app.get("/no-favourites", function(req, res){
-
-// });
-// app.get("/want-to-see", function(req, res){
-
-// });
+}
 
 const port = 800;
 app.listen(port, function(){
     console.log("Server 800 working");
 });
-
-
-//Crear tres colecciones 
-//Usaremos una sola base de datos la cual contendrá 3 collections
-//También pudimos hacer una sola colección que guardara 
-//3 objetos por cada categoría de películas
 
 //Api key: f6137e5195mshdf86938941b3431p1ddc6djsnac1167679c6f
 
