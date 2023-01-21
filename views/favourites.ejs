@@ -1,3 +1,30 @@
 <%- include("partials/header"); -%>
+    
+<section class="cardsContainers">
+    <% moviesArray.forEach(movie => { %>
+        <article  class="movieCard">
+            <div class="infoContainer">
+                <h2><%= movie.name %></h2>
+                <p id="text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam earum tempore eum facere dolor rerum suscipit corrupti consequuntur asperiores molestias nobis omnis.
+                </p>
+        
+                <div class="btnsContainer">
+                    <form action="/btnFavs" method="post">
+                        <button id="deleteBtn" type="submit" name="favBtn">
+                            <i class="fa-regular fa-trash"></i>
+                            <label for="" id="text">Delete</label>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        
+            <div class="imgContainer">
+                <img src="<%= movie.poster %>" alt="moviePhoto">
+            </div>
+        </article>
+    <% }); %>
+</section>
 
 <%- include("partials/footer"); -%>
+
+

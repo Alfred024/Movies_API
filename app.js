@@ -4,6 +4,7 @@ const app = express();
 const http = require("https");
 const _ = require("lodash");
 const mongoose = require("mongoose");
+const { read } = require("fs");
 let contador = 1;
 
 let movies = [];
@@ -44,11 +45,6 @@ const moviesListSchema = {
     movieAdded: [itemMovieSchema]
 };
 const ListMovie = mongoose.model("ListMovie", moviesListSchema);
-  
-// });
-// const want_to_see = new Movie({
-
-// });
 
 app.get("/", function(req, res){
     res.render("home",{});
@@ -76,6 +72,32 @@ app.post("/", function(req, res){
     request.end();
     res.redirect("/searchs");
 });
+app.get("/favourites", function(req, res){
+    ListMovie.findOne({movieSection: "Favourites"}, function (e, section){
+        if(e){
+            console.log("Error detectado: "+e);
+        }else{
+            // console.log("Películas encontradas: "+section.movieAdded[0].name);
+            res.render("favourites", {moviesArray: section.movieAdded});
+        }
+    });
+});
+app.post("/favourites", function(req, res){
+    res.redirect("/favourites");
+});
+
+app.get("/want-to-see", function(req, res){
+    ListMovie.findOne({movieSection: "Want-to-see"}, function (e, section){
+     if(e){
+         console.log("Error detectado: "+e);
+     }else{
+         res.render("want-to-see", {moviesArray: section.movieAdded});
+     }
+    });
+ });
+ app.post("/want-to-see", function(req, res){
+     res.redirect("/want-to-see");
+ });
 
 app.get("/searchs", function(req, res){
     res.render("searchs", {
