@@ -36,7 +36,7 @@ const itemMovieSchema = new mongoose.Schema({
     year: Number,
     poster: String,
     section: String
-  });
+});
 const MovieItem = mongoose.model("MovieItem", itemMovieSchema);
 
 const moviesListSchema = {
@@ -141,17 +141,30 @@ app.post("/btnWTS", function(req, res){
 
 //PARA BORRAR ELEMENTOS AGREGADOS
 app.post("/delete", function(req, res){
-    const movie = (req.body.deleteBtn);
-    const movie2 = JSON.parse(movie);
+    const movie = JSON.parse(req.body.deleteBtn);
+    const movieId = movie._id;
+    const movieSection = movie.section;
 
-    console.log(movie+"\n"); 
-    console.log(movie2);
-
-    // const movieId = movie._id;
-    // const movieSection = movie.section;
-    // console.log("Section: "+movieSection);
-    // console.log("ID: "+movieId);
+    /*
+    1.- Buscamos en la lista la sección 
+    2.- Buscamos en la sección el id para borrar la peli
+    */
 });
+
+function getId(data){
+    let id="";
+    let i = 0;
+
+    while(data[i] !== ","){
+        id+=data[i++];
+    }
+
+    return id+"";
+}
+
+async function getSection(){
+
+} 
 
 async function saveMovie(newMovie){
     const newList = new ListMovie({
@@ -176,8 +189,14 @@ async function saveMovie(newMovie){
 }
 //Verificar que no se repita la película que queremos guardar
 async function isRepeated(){
+    //1.-Busca la sección (FAVOURITES/WANT-TO-SEE)
+    //2.-Busca el id en esa sección
+        //2.1.- Si no está lo agrega
+        //2.2.- Si está manda msj de que esta repetido
     return false;
 }
+
+   
 
 const port = 800;
 app.listen(port, function(){
