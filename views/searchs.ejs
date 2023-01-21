@@ -2,20 +2,35 @@
     
     <section class="cardsContainers">
         <% for(var i=0; i < 10; i++){ %>
-            <article  class="shopCard">
+            <article  class="movieCard">
                 
                 <div class="infoContainer">
                     <h2><%= moviesFounded[i].Title %></h2>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam earum tempore eum facere dolor rerum suscipit corrupti consequuntur asperiores molestias nobis omnis.
+                    <p id="text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam earum tempore eum facere dolor rerum suscipit corrupti consequuntur asperiores molestias nobis omnis.
                     </p>
 
-                    <form action="/btnFavs" method="post">
-                        <button id="favs" type="submit" name="favBtn" value="<%= JSON.stringify(moviesFounded[i]) %>">
-                            <i class="fa-regular fa-heart"></i>
-                            <label for="">Add to favourites</label>
-                        </button>
-                        
-                    </form>
+                    <div class="btnsContainer">
+                        <form action="/btnFavs" method="post">
+                            <button id="favs" type="submit" name="favBtn" value="<%= JSON.stringify(moviesFounded[i]) %>">
+                                <i class="fa-regular fa-heart"></i>
+                                <label for="" id="text">Add to favourites</label>
+                            </button>
+                        </form>
+
+                        <!-- <form action="/btnNoFavs" method="post">
+                            <button id="favs" type="submit" name="favBtn" value="<%= JSON.stringify(moviesFounded[i]) %>">
+                                <i class="fa-solid fa-xmark"></i>
+                                <label for="" id="text">No favourites</label>
+                            </button>
+                        </form> -->
+
+                        <form action="/btnWTS" method="post">
+                            <button id="favs" type="submit" name="favBtn" value="<%= JSON.stringify(moviesFounded[i]) %>">
+                                <i class="fa-regular fa-eye"></i>
+                                <label for="" id="text">Want to see</label>
+                            </button>
+                        </form>
+                    </div>
                     
                 </div>
 
