@@ -10,7 +10,8 @@
         
                 <div class="deleteBtnContainer" >
                     <form action="/delete" method="post">
-                        <button value="<%= movie._id %>" id="deleteBtn" type="submit" name="deleteBtn">
+                        <% const movieToString = JSON.stringify(movie) %> 
+                        <button value="<%= movieToString %>" id="deleteBtn" type="submit" name="deleteBtn">
                             <i class="fa-solid fa-minus"></i>
                             <label for="" id="text">Delete</label>
                         </button>

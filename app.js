@@ -144,27 +144,16 @@ app.post("/delete", function(req, res){
     const movie = JSON.parse(req.body.deleteBtn);
     const movieId = movie._id;
     const movieSection = movie.section;
-
-    /*
-    1.- Buscamos en la lista la sección 
-    2.- Buscamos en la sección el id para borrar la peli
-    */
+    
+    ListMovie.findOneAndUpdate({movieSection: movieSection}, {$pull: {movieAdded: {_id: movieId}}}, function(err, finded){
+        if(!err){
+          res.redirect("/"+(movieSection).toLowerCase());
+        }else{
+          console.log(err);
+        }
+    });
 });
 
-function getId(data){
-    let id="";
-    let i = 0;
-
-    while(data[i] !== ","){
-        id+=data[i++];
-    }
-
-    return id+"";
-}
-
-async function getSection(){
-
-} 
 
 async function saveMovie(newMovie){
     const newList = new ListMovie({
@@ -195,8 +184,6 @@ async function isRepeated(){
         //2.2.- Si está manda msj de que esta repetido
     return false;
 }
-
-   
 
 const port = 800;
 app.listen(port, function(){
