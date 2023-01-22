@@ -5,6 +5,7 @@ const http = require("https");
 const _ = require("lodash");
 const mongoose = require("mongoose");
 const { read } = require("fs");
+const { repeat } = require("lodash");
 
 const movies = [];
 
@@ -38,7 +39,6 @@ const itemMovieSchema = new mongoose.Schema({
     section: String
 });
 const MovieItem = mongoose.model("MovieItem", itemMovieSchema);
-
 const moviesListSchema = {
     movieSection: String,
     movieAdded: [itemMovieSchema]
@@ -123,7 +123,7 @@ app.post("/btnFavs", function(req, res){
         section: "Favourites"
     });
 
-    saveMovie(newMovie)
+    saveMovie(newMovie);
 });
 app.post("/btnWTS", function(req, res){
     //Return the object converted to JSON
@@ -144,6 +144,7 @@ app.post("/delete", function(req, res){
     const movie = JSON.parse(req.body.deleteBtn);
     const movieId = movie._id;
     const movieSection = movie.section;
+    console.log("delete this: "+movieSection);
     
     ListMovie.findOneAndUpdate({movieSection: movieSection}, {$pull: {movieAdded: {_id: movieId}}}, function(err, finded){
         if(!err){
@@ -156,6 +157,7 @@ app.post("/delete", function(req, res){
 
 
 async function saveMovie(newMovie){
+    
     const newList = new ListMovie({
         movieSection: newMovie.section
     })
@@ -165,9 +167,30 @@ async function saveMovie(newMovie){
             console.log(e);
         }else{
             if(list){
-                console.log("Película "+newMovie.name+" guardada en favoritas :)");
-                list.movieAdded.push(newMovie);
-                list.save();
+                const movieName = newMovie.name;
+                ListMovie.findOne({movieSection: newMovie.section}, function(err, movieArrays){
+                    if(err){
+                        console.log("Error para encontrar la sección "+newMovie.section);
+                    }else{
+                        let i = 0;
+                        let repeated = false;
+                        while(repeated === false && i < movieArrays.movieAdded.length) {
+                            if(movieArrays.movieAdded[i++].name == movieName){
+                                repeated = true;
+                            }
+                        }
+
+                        if(repeated){
+                            console.log("La película "+movieName+" ya se encuentra guardada");
+                        }else{
+                            
+                            console.log(movieArrays);
+                            movieArrays.movieAdded.push(newMovie);
+                            movieArrays.save();
+                        }
+                    }
+                });
+
             }else{
                 console.log("Lista "+ newMovie.section +" creada");
                 newList.save();
@@ -177,12 +200,28 @@ async function saveMovie(newMovie){
     });
 }
 //Verificar que no se repita la película que queremos guardar
-async function isRepeated(){
-    //1.-Busca la sección (FAVOURITES/WANT-TO-SEE)
-    //2.-Busca el id en esa sección
-        //2.1.- Si no está lo agrega
-        //2.2.- Si está manda msj de que esta repetido
-    return false;
+async function isRepeated(movieSection, movieName){
+
+    var res;
+    ListMovie.findOne({movieSection: movieSection}, function(err, movieArrays){
+        if(err){
+            console.log(err);
+        }else{
+            let i = 0;
+            let repeated = false;
+            while(repeated === false && i < movieArrays.movieAdded.length) {
+                if(movieArrays.movieAdded[i++].name == movieName){
+                    repeated = true;
+                }
+            }
+            
+            res = repeated;
+            console.log("res: "+res);
+            console.log("rep: "+repeated);
+            return res;
+        }
+    });
+
 }
 
 const port = 800;
