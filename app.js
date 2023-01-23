@@ -48,6 +48,7 @@ app.get("/", function(req, res){
     res.render("home",{});
 });
 app.post("/", function(req, res){
+    movies = [];
     let movie = _.kebabCase(req.body.movieSeacrhed);
     let path = "/?s="+movie+"&r=json&page=1"
     options.path = path;
@@ -77,7 +78,7 @@ app.get("/searchs", function(req, res){
     res.render("searchs", {
         moviesFounded: movies
     });
-    movies = [];
+    
 });
 
 //MÉTODOS PARA RENDERIZAR LOS TEMPLATES DE FAVOURTIES Y WANT-TO-SEE 
@@ -121,6 +122,7 @@ app.post("/btnFavs", function(req, res){
     });
 
     saveMovie(newMovie);
+    res.redirect("/searchs");
 });
 app.post("/btnWTS", function(req, res){
     //Return the object converted to JSON
@@ -133,7 +135,8 @@ app.post("/btnWTS", function(req, res){
         section: "Want-to-see"
     });
 
-    saveMovie(newMovie)
+    saveMovie(newMovie);
+    res.redirect("/searchs");
 });
 
 //PARA BORRAR ELEMENTOS AGREGADOS
