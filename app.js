@@ -19,7 +19,6 @@ let options = {
 	}
 };
 
-
 app.set('view engine', 'ejs');
 app.use(bp.urlencoded({extended:true}));
 app.use(express.static("public"));
@@ -206,6 +205,13 @@ const port = 800;
 app.listen(port, function(){
     console.log("Server 800 working");
 });
+
+//Para mejorar la app
+/*
+1.- Comprobar que cuando haya un tipo en la búsqueda o no se encuentre películas despliegue un msj de error
+2.- Que arroje más resulatados de búsqueda, no solo 10
+3.- Poder hacer un rating de las películas
+*/
 
 //Api key: f6137e5195mshdf86938941b3431p1ddc6djsnac1167679c6f
 
