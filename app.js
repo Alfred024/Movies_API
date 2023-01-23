@@ -4,10 +4,8 @@ const app = express();
 const http = require("https");
 const _ = require("lodash");
 const mongoose = require("mongoose");
-const { read } = require("fs");
-const { repeat } = require("lodash");
 
-const movies = [];
+let movies = [];
 
 let options = {
 	"method": "GET",
@@ -50,17 +48,16 @@ app.get("/", function(req, res){
     res.render("home",{});
 });
 app.post("/", function(req, res){
-    const movie = _.kebabCase(req.body.movieSeacrhed);
-    console.log(movie);
-    const path = "/?s="+movie+"&r=json&page=1"
+    let movie = _.kebabCase(req.body.movieSeacrhed);
+    let path = "/?s="+movie+"&r=json&page=1"
     options.path = path;
-    console.log(options.path);
+
     const request = http.request(options, function (respond) {
         const chunks = [];
         respond.on("data", function (chunk) {
             chunks.push(chunk);
         });
-    
+
         respond.on("end", function () {
             const body = Buffer.concat(chunks);
             const json = JSON.parse(body.toString());
@@ -68,12 +65,19 @@ app.post("/", function(req, res){
             for (let i = 0; i < 10; i++) {
                 movies.push(json.Search[i]);
             }
+            res.redirect("/searchs");
         });
     });
-
     
-    res.redirect("/searchs");
     request.end();
+});
+
+//RENDERIZA LAS PELÍCULAS QUE BUSCAMOS
+app.get("/searchs", function(req, res){
+    res.render("searchs", {
+        moviesFounded: movies
+    });
+    movies = [];
 });
 
 //MÉTODOS PARA RENDERIZAR LOS TEMPLATES DE FAVOURTIES Y WANT-TO-SEE 
@@ -103,13 +107,6 @@ app.post("/want-to-see", function(req, res){
      res.redirect("/want-to-see");
 });
 
-//RENDERIZA LAS PELÍCULAS QUE BUSCAMOS
-app.get("/searchs", function(req, res){
-    res.render("searchs", {
-        moviesFounded: movies
-    });
-    //movies = [];
-});
 
 //BOTONES PARA GUARDAR EN LA LISTA DE PELÍCULAS
 app.post("/btnFavs", function(req, res){
@@ -183,8 +180,6 @@ async function saveMovie(newMovie){
                         if(repeated){
                             console.log("La película "+movieName+" ya se encuentra guardada");
                         }else{
-                            
-                            console.log(movieArrays);
                             movieArrays.movieAdded.push(newMovie);
                             movieArrays.save();
                         }
@@ -199,30 +194,10 @@ async function saveMovie(newMovie){
         }
     });
 }
-//Verificar que no se repita la película que queremos guardar
-async function isRepeated(movieSection, movieName){
+// Verificar que no se repita la película que queremos guardar
+// async function isRepeated(movieSection, movieName){
 
-    var res;
-    ListMovie.findOne({movieSection: movieSection}, function(err, movieArrays){
-        if(err){
-            console.log(err);
-        }else{
-            let i = 0;
-            let repeated = false;
-            while(repeated === false && i < movieArrays.movieAdded.length) {
-                if(movieArrays.movieAdded[i++].name == movieName){
-                    repeated = true;
-                }
-            }
-            
-            res = repeated;
-            console.log("res: "+res);
-            console.log("rep: "+repeated);
-            return res;
-        }
-    });
-
-}
+// }
 
 const port = 800;
 app.listen(port, function(){
